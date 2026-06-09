@@ -168,3 +168,23 @@ Follow this walkthrough to experience the Category Leader OS:
 * **Gross Margin (%)** is calculated as: `((Selling Price - Landed Cost) / Selling Price) * 100`.
 * **Safety Stock Reorder Point** is calculated as: `(Average Daily Demand * Lead Time) + Safety Buffer`.
 * **Default Trade Margin Floor** is locked at `15%`.
+
+---
+
+## ⚖️ Architectural Trade-offs & Future Work
+
+### Core Trade-offs
+1. **Synchronous LLM Recommendations vs. Asynchronous Task Queues:**
+   * *Trade-off:* Currently, recommendations are generated on-demand via blocking API requests to Groq/Gemini. This provides immediate, live data for demo purposes but incurs a 2-3 second latency block.
+   * *Mitigation:* In production, background workers (e.g., Celery + Redis) should pre-generate and cache these recommendations during off-peak hours.
+2. **Local SQLite File Storage vs. Distributed DBMS:**
+   * *Trade-off:* The working model uses SQLite (`fixxly.db`) with custom indexing to allow rapid setup and file portability. However, it does not scale for horizontal writes.
+   * *Mitigation:* Production scale requires migrating the database layer to PostgreSQL or CockroachDB.
+3. **Data Polling vs. Event-Driven Push:**
+   * *Trade-off:* The Next.js client polls the FastAPI database endpoints every 30 seconds to fetch alert updates. This is simpler to implement but creates periodic traffic.
+   * *Mitigation:* Real-time streaming should be handled using WebSockets or Server-Sent Events (SSE).
+
+### Future Development Roadmap
+* **Role-Based Access Control (RBAC):** Integrate authentication (NextAuth/Auth0) to restrict PO approval permissions based on manager authority limits.
+* **Zero-UI Integrations:** Send alerts directly to corporate Slack/Teams channels with interactive webhook buttons (`[Approve PO]`, `[Adjust Qty]`).
+* **Semantic Guardrails:** Embed validation frameworks (like Guardrails AI or NeMo Guardrails) to ensure LLM suggestions never propose pricing below absolute landed cost bounds.
