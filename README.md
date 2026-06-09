@@ -14,6 +14,41 @@ Fixxly CLOS is a state-of-the-art co-pilot platform for Category Leaders in quic
 
 ---
 
+## 💻 Detailed Application Usage Guide
+
+Follow this walkthrough to experience the Category Leader OS:
+
+### 1. Monitor Executive Performance (Cockpit)
+* **Action:** Launch the dashboard (`/`).
+* **Workflow:** View the real-time card summaries showing SKU count, overall warehouse fill rate, and active stockouts. Check the live stockout heatmap indicating which geographical hub needs immediate stock.
+
+### 2. Auto-Replenishment & Purchase Orders
+* **Action:** Navigate to the **Inventory & Replenishment** page.
+* **Workflow:** 
+  1. View active stock level tables filtered by logistics hub.
+  2. Locate any SKU flagged with a red **STOCKOUT** status showing GMV-at-risk.
+  3. Click the **`⚡ AI PO`** button.
+  4. A centered modal overlay will open on screen with a blurred background. The AI computes current daily demand, vendor lead times, and suggests the exact order quantity and value.
+  5. Click **`✓ Approve PO`** or **`✕ Reject`** to execute the action, which clears the alert and resets the modal state.
+
+### 3. Competitor Benchmarking & Dynamic Pricing
+* **Action:** Navigate to the **Pricing & Margin Engine** page.
+* **Workflow:**
+  1. Filter products by **Price Gap** or **Critical Margin** tabs.
+  2. Click **`⚡ AI`** on any undercut item.
+  3. The pricing modal displays current, competitor, and floor pricing limits.
+  4. Review the AI pricing strategies (neutral, competitive, high-margin) and click **`✓ Apply Option 2`** to update the catalog selling price safely.
+
+### 4. Generative SKU Content Production
+* **Action:** Navigate to **Product Content AI**.
+* **Workflow:** Select a hardware product and click **`Generate copy`**. The LLM builds an optimized product title, short description, contractor-oriented bullet points, and Google SEO keywords.
+
+### 5. Settings Configuration & DB Reseeding
+* **Action:** Navigate to **System Settings & Config** (`/settings`).
+* **Workflow:** Adjust target margins, modify safety stock metrics, or click **`Reset Database`** to restore default seeded transaction metrics.
+
+---
+
 ## 🛠️ Architecture & Tech Stack
 
 ```
@@ -33,9 +68,17 @@ Fixxly CLOS is a state-of-the-art co-pilot platform for Category Leaders in quic
       └──────────────────────┘             └─────────────────────┘
 ```
 
-* **Frontend:** Next.js 14 (App Router), React Query (data fetching & caching), Tailwind CSS (glassmorphism design).
-* **Backend:** FastAPI (Python 3.11+), SQLAlchemy ORM, SQLite database.
-* **AI Layer:** Groq (Llama 3.3 70B) as the primary LLM, Google Gemini 2.5 Flash as automatic failover.
+### Tabulated Technology Stack
+
+| Component / Layer | Technology | Functional Role |
+| :--- | :--- | :--- |
+| **Frontend UI** | Next.js 14 (App Router), Tailwind CSS | Delivers the responsive, glassmorphic layout with fade-in animations. |
+| **State & Fetching** | TanStack React Query, Fetch API | Triggers polling requests every 30 seconds to fetch stock alerts. |
+| **Notification Engine** | React Hot Toast | Displays execution states and operation confirmations inside the client viewport. |
+| **Backend API Server** | FastAPI (Python 3.11.7) | Handles async routers, mathematical inventory limits, and database transactions. |
+| **Primary AI Engine** | Groq Llama 3.3 70B | Generates high-speed PO reorder quantities and competitor margins. |
+| **Fallback AI Engine** | Google Gemini 2.5 Flash | Acts as automated failover gateway if Groq experiences rate limits or downtime. |
+| **Database** | SQLite + SQLAlchemy ORM | Local, indexed relational database storing SKUs, transactions, and vendor OTIF metrics. |
 
 ---
 
