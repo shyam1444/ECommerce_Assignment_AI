@@ -2,6 +2,8 @@
 
 Fixxly CLOS is a state-of-the-art co-pilot platform for Category Leaders in quick-commerce building materials and hardware distribution. It automates inventory replenishment, monitors trade margins, tracks vendor KPIs, and leverages Generative AI (Llama 3.3 70B & Gemini 2.5 Flash) to generate purchase order and pricing recommendations directly inside centered, blurred-backdrop modal overlays.
 
+## Link: https://fixxly-ui.onrender.com/
+
 ---
 
 ## 🚀 Key Features
